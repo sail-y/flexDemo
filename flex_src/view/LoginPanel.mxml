@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:parsley="http://www.spicefactory.org/parsley"
+		 width="400" height="300">
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<parsley:Configure/>
+	</fx:Declarations>
+	
+	<!-- 
+	<mx:RemoteObject id="say"
+					 destination="helloworld" 
+					 channelSet="{sodaChannels}"/> 
+	<mx:ChannelSet id="sodaChannels">
+		<mx:AMFChannel uri="/flexDemo/gorilla/messagebroker/amf"/>
+	</mx:ChannelSet>   
+	-->
+	
+	<fx:Script>  
+		<![CDATA[  
+			import command.LoginPM;
+			
+			import event.LoginEvent;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.messaging.FlexClient;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.UIDUtil;
+			
+			
+			
+			[Inject]
+			[Bindable]
+			public var loginPM:LoginPM;  //视图model类
+			
+			private function login():void {
+				loginPM.login();
+			}
+			
+			[CommandResult]
+			public function result (result: Boolean,message:LoginEvent): void {
+				label.text = "login result: " + result.toString();
+			}
+			
+		]]>  
+	</fx:Script>   
+	    
+	<s:TextInput id="username" text="@{loginPM.user.name}" width="100%" borderColor="#3F577E"/> 
+	<s:TextInput id="password" displayAsPassword="true" text="@{loginPM.user.password}"/>
+	<s:Button label="Login" click="login()"/>
+	<s:Label id="label"/> 
+</s:Group>

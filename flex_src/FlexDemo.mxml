@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:parsley="http://www.spicefactory.org/parsley"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   minWidth="955" minHeight="600" xmlns:view="view.*">
+	<s:layout>
+		<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import context.FlexDemoContext;
+			
+			import mx.logging.LogEventLevel;
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<parsley:ContextBuilder config="{FlexDemoContext}"/> 
+		<s:TraceTarget
+			includeCategory="true"
+			includeLevel="true"
+			includeTime="true"
+			level="{LogEventLevel.DEBUG}"
+			>
+			<s:filters>
+				<fx:String>org.spicefactory.parsley.*</fx:String>
+			</s:filters>
+		</s:TraceTarget>
+	</fx:Declarations>
+	<view:LoginPanel />
+</s:Application>

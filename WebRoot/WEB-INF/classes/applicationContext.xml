@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/flex
+	http://www.springframework.org/schema/flex/spring-flex-1.5.xsd"
+	>
+
+	<bean class="org.springframework.flex.servlet.MessageBrokerHandlerAdapter"/>
+	
+	<!--spring mvc配置，所有请求都由_messageBroker处理-->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/*=_messageBroker
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="_messageBroker" class="org.springframework.flex.core.MessageBrokerFactoryBean"/>
+	<!--  
+    这个配置用于处理flex消息，相当于  
+	 也相当于  
+    <flex:message-broker id="_messageBroker"/> 
+    --> 
+    
+	<!-- 这是一种方式 暴露为flex的远程服务
+    
+	<bean id="hello" class="com.ria.flex.HelloWorld">
+	</bean>
+	
+	<bean id="helloworld" class="org.springframework.flex.remoting.RemotingDestinationExporter">
+		<property name="messageBroker" ref="_messageBroker"/>
+		<property name="service" ref="hello"/>
+	</bean>
+	-->
+	
+	<!--  这是另一种方式 暴露为flex的远程服务 -->
+	<bean id="helloworld" class="com.ria.flex.HelloWorld">
+		<!--将这个bean暴露为flex的远程服务-->  
+    	<flex:remoting-destination /> 
+	</bean>
+	
+	<bean id="login" class="com.ria.flex.action.LoginAction">
+		<!--将这个bean暴露为flex的远程服务-->  
+    	<flex:remoting-destination /> 
+	</bean>
+	<!-- 要想配置Message Broker的安全信息，我们需要设定两个处理器。其一是登录命令，它提供了认证与授权；其二是一个安全配置处理器，它保护个别的通道与URL。 -->
+	<!-- 登录命令
+	<bean id="loginCommand"
+ 			class="org.springframework.flex.security3.SpringSecurityLoginCommand">
+		<constructor-arg ref="_authenticationManager"/>
+	</bean>
+	 -->
+	
+</beans>
